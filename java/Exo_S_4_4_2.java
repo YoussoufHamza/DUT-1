@@ -1,0 +1,44 @@
+import java.util.Scanner;
+
+
+public class Exo_S_4_4_2{
+    public static void main(String[] args){
+        Scanner scan;
+        scan = new Scanner(System.in);
+
+        int A,B,C;
+        System.out.println("Entrer le numerateur de la fraction");
+        A = scan.nextInt();
+        System.out.println("Entrer le denominateur de la fraction ");
+        B = scan.nextInt();
+
+        C = PGCD(A,B);
+        System.out.println("La simplification de votre faction "+A+"/"+B+" est "+(A/C)+"/"+(B/C));
+        scan.close();
+    }
+
+    public static int PGCD (int x1, int x2){      
+        int pgcd=1;
+        if((x1==0) || (x2==0)){
+            pgcd = (x1==0)?x2:x1;
+        }else{
+            if(x1<x2){
+                while((x2!=0) && (x1!=0)){
+                    x2-=x1;
+                    pgcd = x1;
+                    x1 = x2;
+                    x2 = pgcd;
+                }
+            }else if(x2<x1){
+                while((x2!=0) && (x1!=0)){
+                    x1-=x2;
+                    pgcd = x2;
+                    x2 = x1;
+                    x1 = pgcd;
+                }
+            }
+        }
+        return pgcd;   
+    }
+
+}

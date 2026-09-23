@@ -1,0 +1,6 @@
+package exo_G_restaurant;
+
+public interface GestionRestaurant {
+	public abstract boolean reserverTable(int id_table);
+	public abstract boolean libererTable(int id_table);
+}

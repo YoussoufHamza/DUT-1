@@ -1,0 +1,6 @@
+package exoG_BD;
+
+public interface Compte {
+	public abstract void deposer();
+	
+}

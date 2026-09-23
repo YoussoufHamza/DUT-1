@@ -1,0 +1,47 @@
+package exoG_BD;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+
+public interface Compte {
+	
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DATABASE_URL = "jdbc:mysql://localhost/java_bd";
+	
+	public abstract void deposer(double montant);
+	public abstract void retirer(double montant);
+	public abstract double getSolde();
+	public abstract boolean vireVers(String NumC, double montant);
+	public abstract String afficherDetails();
+	
+	
+	public void DisplayData(Connection con, Statement stat, ResultSet result, ResultSetMetaData resultmeta, String displayResult) {
+		try {
+			
+			int column = resultmeta.getColumnCount();
+			for(int i=1; i<=column; i++) {
+				displayResult += resultmeta.getColumnName(i) +"\t";
+			}
+			displayResult += "\n----------------------------------------------------- ";
+			displayResult += "----------------------------------------------------- \n";
+			
+			while(result.next()) {
+				for(int i=1; i<=column; i++) {
+					displayResult += result.getObject(i) +"\t";
+				}
+				displayResult += "\n";
+			}
+			
+			JOptionPane option = new JOptionPane();
+			option.showMessageDialog(null, new JTextArea(displayResult), "Ajout d'un employés", JOptionPane.INFORMATION_MESSAGE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}

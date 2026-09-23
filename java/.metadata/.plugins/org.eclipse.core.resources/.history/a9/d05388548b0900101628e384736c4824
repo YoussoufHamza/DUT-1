@@ -1,0 +1,5 @@
+package exoG_BD;
+
+public class CompteEpargne implements Compte {
+
+}

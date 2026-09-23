@@ -1,0 +1,25 @@
+package exo_G_restaurant;
+
+public class Client {
+	private int id;
+	private String nom;
+	private String telephone;
+	private String email;
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public String getNom() {
+		return this.nom;
+	}
+	
+	public String getTelephone() {
+		return this.telephone;
+	}
+	
+	public String getEmail() {
+		return this.email;
+	}
+	
+}

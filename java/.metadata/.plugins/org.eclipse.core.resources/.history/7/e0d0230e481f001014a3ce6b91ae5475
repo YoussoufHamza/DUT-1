@@ -1,0 +1,221 @@
+package exo_GOP;
+
+import java.awt.Color;
+import java.sql.*;
+
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+public class GestionClient implements OperationCommerciale{
+	private int idClient;
+	
+	
+	@Override
+	public boolean passerCommande(int qte, int remise,  int idProduit) {
+		try {
+			Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			Statement stat = null;
+			ResultSet rs = null;
+			
+			stat = con.createStatement();
+			rs = stat.executeQuery("SELECT id_commande from commande where (id_client = "+this.idClient+")");
+			int idCom=0;	
+			while(rs.next()) {
+					idCom = rs.getInt(1);
+			}
+			idCom++;
+			if(stat.execute("INSERT INTO Commande(date, id_client) values (now(), "+this.idClient+") ")==false) {
+				con = DriverManager.getConnection(DATABASE_URL, "root", "");
+				stat = con.createStatement();
+				
+				if(stat.execute("INSERT INTO ligne_commande values ("+idCom+", "+idProduit+", "+qte+", "+remise+") ")==false) {
+					return true;
+				}
+			}
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean validerPaiemenr(int idCommande) {
+		try {
+			Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			Statement stat = null;
+			ResultSet rs = null;
+			
+			stat = con.createStatement();
+				rs = stat.executeQuery("SELECT * from commande where (id_client = "+this.idClient+" AND id_commande = "+idCommande+" AND statut like 'En cours')");
+				if(rs.next()) {
+					if(stat.execute("UPDATE commande set statut = 'Valider' where id_commande like "+idCommande+"")==false) {
+						return true;
+					}
+				}
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean annulerCommande(int idCommande) {
+		
+		try {
+			Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			Statement stat = null;
+			ResultSet rs = null;
+			
+			stat = con.createStatement();
+				rs = stat.executeQuery("SELECT * from commande where (id_client = "+this.idClient+" AND id_commande = "+idCommande+" AND statut like 'En cours')");
+				if(rs.next()) {
+					if(stat.execute("UPDATE commande set statut = 'Annuler' where id_commande like "+idCommande+"")==false) {
+						return true;
+					}
+				}
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public double calculerMontantFacture() {
+		try {
+			Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			Statement stat = null;
+			Statement stat2 = null;
+			ResultSet rs = null;
+			ResultSet rs2 = null;
+			
+			stat = con.createStatement();
+			stat2 =  con.createStatement();
+			double montant = 0;
+				
+			rs = stat.executeQuery("SELECT id_commande from commande where (id_client = "+this.idClient+" AND statut like 'Valider')");
+			while(rs.next()) {
+				int idCommande = rs.getInt(1);
+				rs2 = stat2.executeQuery("Select ((prix_ht*quantite)-((prix_ht*quantite)*(remise/100.0)) ) from ligne_commande as lc, produit as p where (lc.id_commande = "+idCommande+" AND lc.id_produit = p.id_produit AND p.id_produit = lc.id_produit)");
+				if(rs2.next()) montant+=rs2.getDouble(1);
+			}
+			return montant;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public JScrollPane genererBonLivraison() {
+		JScrollPane BonLivraison = null;
+		String[] head = {"Désignation", " Prix", " quantité", " Remise", "prix total avec remise"};
+		try {
+			Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			Statement stat = null;
+			Statement stat2 = null;
+			ResultSet rs = null;
+			ResultSet rs2 = null;
+			
+			stat = con.createStatement();
+			stat2 =  con.createStatement();
+			double montant = 0;
+			int nbreCommande=0;
+			
+			rs = stat.executeQuery("SELECT count(*) from commande where (id_client = "+this.idClient+" AND statut like 'Valider')");
+			
+			if(rs.next()) {
+				nbreCommande = rs.getInt(1);
+			}
+			String[][] data = new String[nbreCommande+3][6];
+			rs = stat.executeQuery("SELECT id_commande from commande where (id_client = "+this.idClient+" AND statut like 'Valider')");
+			int k = 0;
+			while(rs.next()) {
+				
+				int idCommande = rs.getInt(1);
+				rs2 = stat2.executeQuery("Select designation, prix_ht, quantite, remise from ligne_commande as lc, produit as p where (lc.id_commande = "+idCommande+" AND lc.id_produit = p.id_produit AND p.id_produit = lc.id_produit)");
+				if(rs2.next()) {
+					data[k][0] = rs2.getString(1);
+					data[k][1] = rs2.getDouble(2)+"";
+					data[k][2] = rs2.getInt(3)+"";
+					data[k][3] = rs2.getInt(4)+"%";
+					k++;
+				}
+			}
+			montant = this.calculerMontantFacture();
+			data[k+2][0] ="Montant :";
+			data[k+2][4] = montant+" dh"; 
+			BonLivraison = tableDefaut(head, data);
+			return BonLivraison;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static JScrollPane tableDefaut(String[] head, String[][] data) {
+		
+		JTable table = new JTable(data,head);
+		table.setFocusable(false);
+		table.setBackground(Color.WHITE);
+		table.setForeground(Color.black);
+		table.setCellSelectionEnabled(false);
+		table.setEnabled(false);
+		table.setRowSelectionAllowed(false);
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		
+		
+		return scrollPane;
+	}
+	
+	@Override
+	public void setIdClient(int idClient) {
+		try {
+			Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			Statement stat = null;
+			ResultSet rs =  null;
+			stat = con.createStatement();
+			
+			rs  = stat.executeQuery("SELECT * from Client Where id_client = "+idClient+"");
+			if(rs.next()) {
+				this.idClient = idClient;
+			}else {
+				JOptionPane.showMessageDialog(null, "Client(e) inconnu(e) ","Client", JOptionPane.WARNING_MESSAGE);
+			}
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public int[] RecupererCommande() {
+		try {
+			Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			Statement stat = null;
+			ResultSet rs = null;
+			
+			stat = con.createStatement();
+			rs = stat.executeQuery("SELECT count(*) from commande where (id_client = "+this.idClient+")");
+			int nbreCom=0;	
+			if(rs.next()) {
+					nbreCom = rs.getInt(1);
+			}
+			int[] tab = new int[nbreCom];
+			rs = stat.executeQuery("SELECT id_commande from commande where (id_client = "+this.idClient+")");
+			int idCom=0;	
+			while(rs.next()) {
+				tab[idCom] = rs.getInt(1);
+				idCom++;
+			}
+			return tab;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+}

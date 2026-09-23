@@ -1,0 +1,17 @@
+package exoG_BD;
+
+public class TestCompte {
+
+	public static void main(String[] args) {
+		CompteEpargne compte1= new CompteEpargne();
+		compte1.setNumcompte("123");
+		compte1.afficherDetails();
+		compte1.deposer(3000);
+		compte1.afficherDetails();
+		compte1.retirer(2500);
+		compte1.afficherDetails();
+		compte1.vireVers("321", 2100);
+		double solde = compte1.getSolde();
+	}
+
+}

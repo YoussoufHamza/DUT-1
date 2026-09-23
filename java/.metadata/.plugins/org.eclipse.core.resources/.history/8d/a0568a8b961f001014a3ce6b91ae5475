@@ -1,0 +1,63 @@
+package exo_G_restaurant;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JOptionPane;
+
+public class Table {
+	static final String DATABASE_URL = "jdbc:mysql://localhost/java2";
+	private int id;
+	private int numero;
+	private int capacite;
+	private String zone;
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public int getNumero() {
+		return this.numero;
+	}
+	
+	public int getCapacite() {
+		return this.capacite;
+	}
+	
+	public String getZone() {
+		return this.zone;
+	}
+	
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+	
+	public void setCapacite(int capacite) {
+		this.capacite = capacite;
+	}
+	
+	public void setZone(String zone) {
+		this.zone = zone;
+	}
+	
+	public void setId(int ID) {
+		try {
+			Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			Statement stat = null;
+			ResultSet rs =  null;
+			stat = con.createStatement();
+			
+			rs  = stat.executeQuery("SELECT * from Table Where id = "+ID+"");
+			if(rs.next()) {
+				this.id = ID;
+			}else {
+				JOptionPane.showMessageDialog(null, "Table ","Client", JOptionPane.WARNING_MESSAGE);
+			}
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+	}
+}

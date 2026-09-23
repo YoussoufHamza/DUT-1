@@ -1,0 +1,21 @@
+import java.util.Scanner;
+
+
+public class Exo_1{
+    public static void main(String[] args){
+        Scanner scan;
+        scan = new Scanner(System.in);
+
+        int J;
+        System.out.println("Entrer un nombre ");
+        J = scan.nextInt();
+
+        int som = 0;
+
+        for (int i = 1; i <= J; i++) {
+            som +=i;
+        }
+
+        System.out.println("La somme des nombres de 1 à "+J+" est "+som);
+    }
+}

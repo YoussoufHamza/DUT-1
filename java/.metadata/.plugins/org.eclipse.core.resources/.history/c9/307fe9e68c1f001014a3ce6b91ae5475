@@ -1,0 +1,41 @@
+package exo_G_restaurant;
+
+public class Commande {
+	private int id;
+	private int id_table;
+	private String date_heure;
+	private String statut;
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public int getId_table() {
+		return this.id_table;
+	}
+	
+	public String getDate_heure() {
+		return this.date_heure;
+	}
+	
+	public String getStatut() {
+		return this.statut;
+	}
+	
+	public void setId_table(int id_table) {
+		this.id_table = id_table;
+	}
+	
+	public void setDate_heure(String date_heure) {
+		this.date_heure = date_heure;
+	}
+	
+	public void setStatut(String Statut) {
+		this.statut = statut;
+	}
+	
+	public void setId(int ID) {
+		this.id = ID;
+	}
+	
+}

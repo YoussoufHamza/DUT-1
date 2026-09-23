@@ -1,0 +1,9 @@
+package exo_G_restaurant;
+
+public interface GestionRestaurant {
+	public abstract boolean reserverTable(Table table);
+	public abstract boolean libererTable(Table table);
+	public abstract boolean prendreCommande(Commande commande);
+	public abstract boolean mettreAJourStock();
+	public abstract boolean genererFacture(Client client);
+}

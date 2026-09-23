@@ -1,0 +1,42 @@
+package exo_G_restaurant;
+
+import java.sql.*;
+import javax.swing.*;
+
+public class Restaurant implements GestionRestaurant {
+
+	@Override
+	public boolean reserverTable(Table table) {
+		try {
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean libererTable(Table table) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean prendreCommande(Commande commande) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mettreAJourStock() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean genererFacture(Client client) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

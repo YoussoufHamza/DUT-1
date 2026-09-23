@@ -1,0 +1,504 @@
+package exoG_BD;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+
+public class TestCompte {
+
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DATABASE_URL = "jdbc:mysql://localhost/java_bd";
+	
+	public static void main(String[] args) {
+		
+		displayInterface();
+		
+	}
+	
+	public static void displayInterface() {
+		
+		
+		JMenuItem HistoriqueDesOP =  new JMenuItem(" Historique des opérations"); 
+		JMenuItem rechercheCompte =  new JMenuItem(" Rechercher un compte");
+		JMenuItem AffichageCompte =  new JMenuItem(" Affichage de comptes");
+		JMenuItem ModificationCompte =  new JMenuItem(" Modification de comptes");
+		JMenuItem SuppressionCompte =  new JMenuItem(" Suppression de comptes");
+		JMenuItem Operation =  new JMenuItem(" Operation bancaire");
+		
+		
+		JMenu Menu = new JMenu("Menu");
+		Menu.add(AffichageCompte);
+		Menu.add(rechercheCompte);
+		Menu.add(ModificationCompte);
+		Menu.add(SuppressionCompte);	
+		Menu.add(Operation);
+		Menu.add(HistoriqueDesOP);
+		Menu.setForeground(Color.blue);
+
+		JMenuBar MenuBar =  new JMenuBar();
+		MenuBar.add(Menu);
+		
+		
+		JLabel Titre = new JLabel("Application de gestion bancaire");
+		
+		JPanel TitreETMenu =  new JPanel(new GridLayout(3,1));
+		JPanel ResumeIntro = new JPanel(new GridLayout(3,1));
+		JPanel StateBar = new JPanel(new GridLayout(1,1));
+		
+		JTextArea text =  new JTextArea();
+		text.setFocusable(false);
+		text.setRows(5);
+		text.setColumns(1);
+		text.setEditable(false);
+		text.setForeground(new Color(Color.TRANSLUCENT));
+		JLabel State = new JLabel("");
+		StateBar.setBackground(Color.GREEN);
+		State.setForeground(Color.white);
+		StateBar.add(State);
+		
+		TitreETMenu.add(MenuBar);
+		TitreETMenu.add(Titre);
+		
+		text.setText("\n\n\n\t\tBienvenue sur l'application de gestion \n \tIci vous pourrez effectuer plusieurs opérations : \n \t I-Rechercher un compte "
+				+ "\n \t II-Afficher un compte"
+				+ "\n \t III-Modification de compte"
+				+ "\n \t IV-Supprimer un compte"
+				+ "\n\t V-Dépôt, Retrait, virement d'un compte vers un autre"
+				+ "\n\t VI-Afficher l'historique des opérations ");
+		
+		JFrame displayWindow =  new JFrame("Accueil");
+		displayWindow.setSize(1000,400);
+		displayWindow.setLayout(new BorderLayout());
+		displayWindow.add(TitreETMenu, BorderLayout.NORTH);
+		displayWindow.add(text,BorderLayout.CENTER);
+		displayWindow.add(StateBar, BorderLayout.SOUTH);
+		displayWindow.setVisible(true);
+		
+		ActionListener MenuSelect = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JMenuItem option = (JMenuItem)e.getSource();
+				if(option.getText().equals(" Affichage de comptes")) {
+					displayWindow.dispose();
+					displayAffichage();
+				}else if(option.getText().equals(" Rechercher un compte")) {
+					Recherche();
+				}
+				
+			}
+		
+		
+		};
+		
+		AffichageCompte.addActionListener(MenuSelect);
+		rechercheCompte.addActionListener(MenuSelect);
+	}
+	
+	public static void displayAffichage() {
+		JMenuItem HistoriqueDesOP =  new JMenuItem(" Historique des opérations"); 
+		JMenuItem rechercheCompte =  new JMenuItem(" Rechercher un compte");
+		JMenuItem AffichageCompte =  new JMenuItem(" Affichage de comptes");
+		JMenuItem ModificationCompte =  new JMenuItem(" Modification de comptes");
+		JMenuItem SuppressionCompte =  new JMenuItem(" Suppression de comptes");
+		JMenuItem Operation =  new JMenuItem(" Operation bancaire");
+		
+		JMenu Menu = new JMenu("Menu");
+		Menu.add(AffichageCompte);
+		Menu.add(rechercheCompte);
+		Menu.add(ModificationCompte);
+		Menu.add(SuppressionCompte);	
+		Menu.add(Operation);
+		Menu.add(HistoriqueDesOP);
+		Menu.setForeground(Color.blue);
+
+		JMenuBar MenuBar =  new JMenuBar();
+		MenuBar.add(Menu);
+		
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result;
+		ResultSetMetaData resultmeta;
+		String displayResult= "";
+		
+		try {
+	   		Class.forName(JDBC_DRIVER);
+			con =  DriverManager.getConnection(DATABASE_URL, "root", "");
+			stat = con.createStatement();
+			
+			int nbreid=0;
+			
+			result = stat.executeQuery("SELECT count(*) from Compte");
+			if(result.next()) {
+				nbreid = result.getInt(1);
+			}
+			result = stat.executeQuery("SELECT numCompte, nomProprietaire, Solde, Type_Compte from Compte");
+			resultmeta = result.getMetaData();
+			
+			int column = resultmeta.getColumnCount();
+			String[] head =  new String[column];
+			
+			for(int i=1; i<=column; i++) {
+				head[i-1]= resultmeta.getColumnName(i);
+			}
+			displayResult += "\n----------------------------------------------------- ";
+			displayResult += "----------------------------------------------------- \n";
+			
+			String[][] Data= new String[nbreid][column];
+			while(result.next()) {
+				for(int i=1; i<=column; i++) {
+					Data[result.getRow()-1][i-1]= result.getObject(i)+"";
+				}
+			}
+			
+			JScrollPane tableau = tableDefaut(head,Data);
+			
+			
+			JLabel Titre = new JLabel("Affichage de comptes");
+			
+			JPanel TitreETMenu =  new JPanel(new GridLayout(3,1));
+			JPanel ResumeIntro = new JPanel(new GridLayout(3,1));
+			JPanel StateBar = new JPanel(new GridLayout(1,1));
+			
+			JLabel State = new JLabel("Affichage de comptes");
+			State.setForeground(Color.white);
+			StateBar.setBackground(Color.BLUE);
+			StateBar.add(State);
+			
+			TitreETMenu.add(MenuBar);
+			TitreETMenu.add(Titre);
+			
+			JTextArea text = new JTextArea(displayResult);
+			text.setEditable(false);
+			text.setFocusable(false);
+			
+			JFrame displayWindowA =  new JFrame("Accueil");
+			displayWindowA.setSize(1000,400);
+			displayWindowA.setLayout(new BorderLayout());
+			displayWindowA.add(TitreETMenu, BorderLayout.NORTH);
+			displayWindowA.add(tableau,BorderLayout.CENTER);
+			displayWindowA.add(StateBar, BorderLayout.SOUTH);
+			displayWindowA.setVisible(true);
+			
+			
+			
+			ActionListener MenuSelect = new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JMenuItem option = (JMenuItem)e.getSource();
+					if(option.getText().equals(" Affichage de comptes")) {
+						displayAffichage();
+					}else if(option.getText().equals(" Rechercher un compte")) {
+						Recherche();
+					}
+					
+				}
+			
+			
+			};
+			
+			AffichageCompte.addActionListener(MenuSelect);
+			rechercheCompte.addActionListener(MenuSelect);
+	   	} catch (SQLException e1) {
+	
+		e1.printStackTrace();
+	   	} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+	}
+	
+
+	public static void Recherche() {
+		JMenuItem HistoriqueDesOP =  new JMenuItem(" Historique des opérations"); 
+		JMenuItem rechercheCompte =  new JMenuItem(" Rechercher un compte");
+		JMenuItem AffichageCompte =  new JMenuItem(" Affichage de comptes");
+		JMenuItem ModificationCompte =  new JMenuItem(" Modification de comptes");
+		JMenuItem SuppressionCompte =  new JMenuItem(" Suppression de comptes");
+		JMenuItem Operation =  new JMenuItem(" Operation bancaire");
+		
+		JMenu Menu = new JMenu("Menu");
+		Menu.add(AffichageCompte);
+		Menu.add(rechercheCompte);
+		Menu.add(ModificationCompte);
+		Menu.add(SuppressionCompte);	
+		Menu.add(Operation);
+		Menu.add(HistoriqueDesOP);
+		Menu.setForeground(Color.blue);
+
+		JMenuBar MenuBar =  new JMenuBar();
+		MenuBar.add(Menu);
+		
+	
+			
+			JLabel Titre = new JLabel("Recherche de compte");
+			JLabel Recherche = new JLabel("Entrer le N° de compte");
+			JTextField entry = new JTextField();
+			JTextField blank = new JTextField();
+			JButton rechercher = new JButton("Rechercher");
+			rechercher.setBackground(Color.blue);
+			rechercher.setForeground(Color.white);
+			
+			blank.setFocusable(false);
+			blank.setEditable(false);
+			
+			
+			JPanel TitreETMenu =  new JPanel(new GridLayout(3,1));
+			JPanel RecherchePan = new JPanel(new GridLayout(15,3));
+			JPanel ResultRecherche = new JPanel(new GridLayout(3,1));
+			JPanel StateBar = new JPanel(new GridLayout(1,1));
+			
+			JLabel State = new JLabel("Recherche de compte");
+			State.setForeground(Color.white);
+			StateBar.setBackground(Color.BLUE);
+			StateBar.add(State);
+			
+			TitreETMenu.add(MenuBar);
+			TitreETMenu.add(Titre);
+			
+			ResultRecherche.setVisible(false);
+			
+			ActionListener Rechercher = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						Class.forName(JDBC_DRIVER);
+						
+						Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+						Statement stat = con.createStatement();
+						ResultSet rs = null;
+						ResultSetMetaData resultmeta = null;
+						if(!(entry.getText().isEmpty())) {
+							rs = stat.executeQuery("SELECT numCompte, nomProprietaire, Solde, Type_Compte from Compte where (numCompte like '"+entry.getText()+"')");
+							resultmeta = rs.getMetaData();
+							String[] head = new String[resultmeta.getColumnCount()];
+							for(int i=1; i<=resultmeta.getColumnCount(); i++) {
+								head[i-1] = resultmeta.getColumnName(i);
+							}
+							String[][] data =  new String[1][resultmeta.getColumnCount()];
+							if(rs.next()) {
+								for(int i=1; i<=resultmeta.getColumnCount(); i++) {
+									data[0][i-1] = rs.getObject(i)+"";
+								}	
+								JScrollPane tableau = tableDefaut(head,data);
+								ResultRecherche.add(tableau);
+								ResultRecherche.revalidate();
+								ResultRecherche.setVisible(true);
+							}else {
+								ResultRecherche.setVisible(false);
+								ResultRecherche.removeAll();
+								ResultRecherche.revalidate();
+							}
+						}else {
+							JOptionPane.showMessageDialog(null, "Entrer un numéro valide/numéro de compte inconnue", "erreur", JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (SQLException | ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				};
+			};
+			
+			
+			
+			RecherchePan.add(Recherche);
+			RecherchePan.add(blank);
+			RecherchePan.add(entry);
+			RecherchePan.add(blank);
+			RecherchePan.add(rechercher);
+			
+			rechercher.addActionListener(Rechercher);
+			
+			JFrame displayWindowR =  new JFrame("Accueil");
+			blank.setBackground(displayWindowR.getBackground());
+			blank.setBorder(null);
+			displayWindowR.setSize(1000,400);
+			displayWindowR.setLayout(new BorderLayout());
+			displayWindowR.add(TitreETMenu, BorderLayout.NORTH);
+			displayWindowR.add(RecherchePan, BorderLayout.WEST);
+			displayWindowR.add(ResultRecherche,BorderLayout.CENTER);
+			displayWindowR.add(StateBar, BorderLayout.SOUTH);
+			displayWindowR.setVisible(true);
+	   	
+			ActionListener MenuSelect = new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JMenuItem option = (JMenuItem)e.getSource();
+					if(option.getText().equals(" Affichage de comptes")) {
+						displayAffichage();
+					}else if(option.getText().equals(" Rechercher un compte")) {
+						Recherche();
+					}
+					
+				}
+			
+			
+			};
+			
+			AffichageCompte.addActionListener(MenuSelect);
+			rechercheCompte.addActionListener(MenuSelect);
+		
+	}
+	
+
+	public static void Supprimer() {
+		JMenuItem HistoriqueDesOP =  new JMenuItem(" Historique des opérations"); 
+		JMenuItem rechercheCompte =  new JMenuItem(" Rechercher un compte");
+		JMenuItem AffichageCompte =  new JMenuItem(" Affichage de comptes");
+		JMenuItem ModificationCompte =  new JMenuItem(" Modification de comptes");
+		JMenuItem SuppressionCompte =  new JMenuItem(" Suppression de comptes");
+		JMenuItem Operation =  new JMenuItem(" Operation bancaire");
+		
+		JMenu Menu = new JMenu("Menu");
+		Menu.add(AffichageCompte);
+		Menu.add(rechercheCompte);
+		Menu.add(ModificationCompte);
+		Menu.add(SuppressionCompte);	
+		Menu.add(Operation);
+		Menu.add(HistoriqueDesOP);
+		Menu.setForeground(Color.blue);
+
+		JMenuBar MenuBar =  new JMenuBar();
+		MenuBar.add(Menu);
+		
+	
+			
+			JLabel Titre = new JLabel("Suppression de compte");
+			JLabel Recherche = new JLabel("Entrer le N° de compte");
+			JTextField entry = new JTextField();
+			JTextField blank = new JTextField();
+			JButton rechercher = new JButton("Supprimer");
+			supprimer.setBackground(Color.blue);
+			supprimer.setForeground(Color.white);
+			
+			blank.setFocusable(false);
+			blank.setEditable(false);
+			
+			
+			JPanel TitreETMenu =  new JPanel(new GridLayout(3,1));
+			JPanel RecherchePan = new JPanel(new GridLayout(15,3));
+			JPanel ResultRecherche = new JPanel(new GridLayout(3,1));
+			JPanel StateBar = new JPanel(new GridLayout(1,1));
+			
+			JLabel State = new JLabel("Suppression de compte");
+			State.setForeground(Color.white);
+			StateBar.setBackground(Color.BLUE);
+			StateBar.add(State);
+			
+			TitreETMenu.add(MenuBar);
+			TitreETMenu.add(Titre);
+			
+			ResultRecherche.setVisible(false);
+			
+			ActionListener Rechercher = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						Class.forName(JDBC_DRIVER);
+						
+						Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+						Statement stat = con.createStatement();
+						ResultSet rs = null;
+						ResultSetMetaData resultmeta = null;
+						if(!(entry.getText().isEmpty())) {
+							rs = stat.executeQuery("SELECT numCompte, nomProprietaire, Solde, Type_Compte from Compte where (numCompte like '"+entry.getText()+"')");
+							resultmeta = rs.getMetaData();
+							String[] head = new String[resultmeta.getColumnCount()];
+							for(int i=1; i<=resultmeta.getColumnCount(); i++) {
+								head[i-1] = resultmeta.getColumnName(i);
+							}
+							String[][] data =  new String[1][resultmeta.getColumnCount()];
+							if(rs.next()) {
+								for(int i=1; i<=resultmeta.getColumnCount(); i++) {
+									data[0][i-1] = rs.getObject(i)+"";
+								}	
+								JScrollPane tableau = tableDefaut(head,data);
+								ResultRecherche.add(tableau);
+								ResultRecherche.revalidate();
+								ResultRecherche.setVisible(true);
+								Statement stat2 = con.createStatement();
+								if(!(stat2.execute("DELETE from Compte where (numCompte like '"+entry.getText()+"')"))) {
+									JOptionPane.showMessageDialog(null, "Compte N°"+entry.getText()+" supprimé avec succès", "Information", JOptionPane.INFORMATION_MESSAGE);	
+								}
+							}else {
+								ResultRecherche.setVisible(false);
+								ResultRecherche.removeAll();
+								ResultRecherche.revalidate();
+							}
+						}else {
+							JOptionPane.showMessageDialog(null, "Entrer un numéro valide/numéro de compte inconnue", "erreur", JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (SQLException | ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				};
+			};
+			
+			
+			
+			RecherchePan.add(Recherche);
+			RecherchePan.add(blank);
+			RecherchePan.add(entry);
+			RecherchePan.add(blank);
+			RecherchePan.add(rechercher);
+			
+			rechercher.addActionListener(Rechercher);
+			
+			JFrame displayWindowR =  new JFrame("Accueil");
+			blank.setBackground(displayWindowR.getBackground());
+			blank.setBorder(null);
+			displayWindowR.setSize(1000,400);
+			displayWindowR.setLayout(new BorderLayout());
+			displayWindowR.add(TitreETMenu, BorderLayout.NORTH);
+			displayWindowR.add(RecherchePan, BorderLayout.WEST);
+			displayWindowR.add(ResultRecherche,BorderLayout.CENTER);
+			displayWindowR.add(StateBar, BorderLayout.SOUTH);
+			displayWindowR.setVisible(true);
+	   	
+			ActionListener MenuSelect = new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					JMenuItem option = (JMenuItem)e.getSource();
+					if(option.getText().equals(" Affichage de comptes")) {
+						displayAffichage();
+					}else if(option.getText().equals(" Rechercher un compte")) {
+						Recherche();
+					}
+					
+				}
+			
+			
+			};
+			
+			AffichageCompte.addActionListener(MenuSelect);
+			rechercheCompte.addActionListener(MenuSelect);
+		
+	}
+	
+
+	public static JScrollPane tableDefaut(String[] head, String[][] data) {
+		
+		JTable table = new JTable(data,head);
+		table.setFocusable(false);
+		table.setBackground(Color.WHITE);
+		table.setForeground(Color.black);
+		table.setCellSelectionEnabled(false);
+		table.setEnabled(false);
+		table.setRowSelectionAllowed(false);
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		
+		
+		return scrollPane;
+	}
+	
+}

@@ -1,0 +1,51 @@
+package exoG_BD;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+import javax.swing.*;
+
+public class CompteEpargne implements Compte {
+	private String numCompte;
+	private double solde;
+	
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DATABASE_URL = "jdbc:mysql://localhost/java_bd";
+	
+	@Override
+	public void deposer(double montant) {
+		this.solde+=montant;
+		
+	}
+	@Override
+	public void retirer(double montant) {
+		if(this.solde<montant) {
+			JOptionPane.showMessageDialog(null, "Solde insuffisant", "ALERTE", JOptionPane.WARNING_MESSAGE);
+		}else {
+			this.solde-=montant;
+			JOptionPane.showMessageDialog(null, "Compte débité", "ALERTE", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+	@Override
+	public double getSolde() {
+		return this.solde;
+	}
+	@Override
+	public boolean vireVers(String NumC, double montant) {
+		if() {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	@Override
+	public String afficherDetails() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+}

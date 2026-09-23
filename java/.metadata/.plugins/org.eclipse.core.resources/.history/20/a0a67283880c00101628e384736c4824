@@ -1,0 +1,83 @@
+package exoG_BD;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
+
+public class TestCompte {
+
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DATABASE_URL = "jdbc:mysql://localhost/java_bd";
+	
+	public static void main(String[] args) {
+		
+		displayInterface();
+		
+	}
+	
+	public static void displayInterface() {
+		
+		
+		JMenuItem HistoriqueDesOP =  new JMenuItem(" Historique des opérations"); 
+		JMenuItem rechercheCompte =  new JMenuItem(" Rechercher un compte");
+		JMenuItem AffichageCompte =  new JMenuItem(" Affichage de comptes");
+		JMenuItem ModificationCompte =  new JMenuItem(" Modification de comptes");
+		JMenuItem SuppressionCompte =  new JMenuItem(" Suppression de comptes");
+		JMenuItem Operation =  new JMenuItem(" Operation bancaire");
+		
+		HistoriqueDesOP.setForeground(new Color(255,255,255));
+		
+		JMenu Menu = new JMenu("Menu");
+		Menu.add(AffichageCompte);
+		Menu.add(rechercheCompte);
+		Menu.add(ModificationCompte);
+		Menu.add(SuppressionCompte);	
+		Menu.add(Operation);
+		Menu.add(HistoriqueDesOP);
+		Menu.setForeground(new Color(200,100,29));
+
+		JMenuBar MenuBar =  new JMenuBar();
+		MenuBar.add(Menu);
+		
+		MenuBar.setBackground(new Color(255,255,255));
+		
+		JLabel Titre = new JLabel("Application de gestion bancaire");
+		
+		
+		JPanel TitreETMenu =  new JPanel(new GridLayout(3,1));
+		JPanel ResumeIntro = new JPanel(new GridLayout(3,1));
+		JPanel StateBar = new JPanel(new GridLayout(1,1));
+		
+		JTextArea text =  new JTextArea();
+		text.setFocusable(false);
+		text.setRows(5);
+		text.setColumns(1);
+		text.setEditable(false);
+		text.setForeground(new Color(Color.TRANSLUCENT));
+		JLabel State = new JLabel("Accueil");
+		StateBar.setBackground(Color.GREEN);
+		StateBar.add(State);
+		
+		TitreETMenu.add(MenuBar);
+		TitreETMenu.add(Titre);
+		
+		text.setText("\n\n\n\t\tBienvenue sur l'application de gestion \n \tIci vous pourrez effectuer plusieurs opérations : \n \t I-Rechercher un compte "
+				+ "\n \t II-Afficher un compte"
+				+ "\n \t III-Modification de compte"
+				+ "\n \t IV-Supprimer un compte"
+				+ "\n\t V-Dépôt, Retrait, virement d'un compte vers un autre"
+				+ "\n\t VI-Afficher l'historique des opérations ");
+		
+		JFrame displayWindow =  new JFrame("Accueil");
+		displayWindow.setSize(1000,400);
+		displayWindow.setLayout(new BorderLayout());
+		displayWindow.add(TitreETMenu, BorderLayout.NORTH);
+		displayWindow.add(text,BorderLayout.CENTER);
+		displayWindow.add(StateBar, BorderLayout.SOUTH);
+		displayWindow.setVisible(true);
+		
+		
+	}
+
+}

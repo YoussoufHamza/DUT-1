@@ -1,0 +1,183 @@
+*{
+    list-style: none;
+    text-decoration: none;
+    color: #fff;
+    overflow-x: hidden;
+}
+header{
+    width: 60%;
+    padding: 1% 22%;
+}
+
+header nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1% 2%;
+    font-size: 18px;
+    background-color: #fff;
+}
+
+li a{
+    color: #000;
+}
+
+li a:hover{
+    color: rgb(245, 171, 52);
+}
+
+body{
+    background: url("2.jpg");
+}
+
+section{
+    min-height: 70vh;
+}
+
+.accueil{
+    padding: 5% 9%;
+    width: 60%;
+}
+
+.accueil h1{
+    font-size: 35px;
+}
+
+.accueil h1 span{
+    font-size: 30px;
+    color: rgb(245, 171, 52);
+    margin: 0;
+}
+
+.aprop{
+    padding: 5% 9%;
+    width: 80%;
+}
+
+.aprop p{
+    font-size: 30px;
+}
+
+.aprop div{
+    padding: 0% 38%;
+}
+
+.aprop img{
+    height: 200px;
+    width: 200px;
+    border-radius: 20%;
+}
+
+.educ{
+    padding: 2% 9%;
+    width: 80%;
+}
+
+.educ span{
+    color: rgb(245, 171, 52);
+}
+
+.educ p{
+    font-size: 18px;
+}
+
+.educ h1{
+    border: .3px solid rgb(245, 171, 52);
+    width: 30%;
+}
+
+.educ h1:nth-child(2){
+    margin-left: 30%;
+}
+
+.educ h1:nth-child(3){
+    margin-left: 60%;
+}
+
+.comp{
+    padding: 2% 9%;
+    width: 80%;
+}
+
+.comp span{
+    color: rgb(245, 171, 52);
+}
+
+.comp p{
+    font-size: 18px;
+}
+
+.comp h1{
+    border: .3px solid rgb(245, 171, 52);
+    width: 30%;
+}
+
+.comp h1:nth-child(2){
+    margin-left: 30%;
+}
+
+.comp h1:nth-child(3){
+    margin-left: 60%;
+}
+
+.attestation{
+    padding: 2% 9%;
+    width: 90%;
+}
+
+.attestation span{
+    color: rgb(226, 237, 15);
+}
+
+.attestation p{
+    font-size: 18px;
+}
+
+.attestation h1{
+    border: .3px solid rgb(226, 237, 15);
+    width: 100%;
+}
+
+.attestation h1:nth-child(2){
+    margin-left: 20%;
+}
+
+.attestation h1:nth-child(3){
+    margin-left: 40%;
+}
+
+.attestation div{
+    width: 80%;
+    border-right: 3px solid rgb(245, 171, 52);
+}
+
+.loisir h1{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+
+.loisir h1 p{
+    border: .3px solid rgb(226, 237, 15);
+    width: 90%;
+}
+
+.loisir{
+    padding: 2% 5%;
+    width: 90%;
+}
+
+.loisir span{
+    color: rgb(226, 237, 15);
+}
+
+.loisir p{
+    font-size: 18px;
+}
+
+.loisir img{
+    height: 300px;
+    width: 400px;
+    border-radius: 3px;
+}

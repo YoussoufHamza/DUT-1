@@ -1,0 +1,105 @@
+package exo_G_restaurant;
+
+import java.sql.*;
+import javax.swing.*;
+
+public class Restaurant implements GestionRestaurant {
+
+	@Override
+	public boolean reserverTable(Table table, Client client, String date_heure, int nb_personne) {
+		Connection con = null;
+		Statement state = null;
+		ResultSet result = null;
+		try {
+			con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			state = con.createStatement();
+			if(state.execute("INSERT INTO RESERVATION(id_client, id_table, date_heure, nb_personne) VALUES("+client.getId()+", "+table.getId()+", '"+date_heure+"', "+nb_personne+")") == false)
+				return true;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean libererTable(Table table, int id_reservation) {
+		Connection con = null;
+		Statement state = null;
+		ResultSet result = null;
+		try {
+			con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			state = con.createStatement();
+			if(state.execute("DELETE FROM RESERVATION WHERE(id = "+id_reservation+" AND id_table = "+table.getId()+") ") == false)
+				return true;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean prendreCommande(Commande commande, String date_heure) {
+		Connection con = null;
+		Statement state = null;
+		ResultSet result = null;
+		try {
+			con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			state = con.createStatement();
+			if(state.execute("INSERT INTO COMMANDE(id_table, date_heuree) VALUES("+commande.getId_table()+", '"+date_heure+"')") == false)
+				return true;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean mettreAJourStock(int id_item, int qte) {
+		Connection con = null;
+		Statement state = null;
+		ResultSet result = null;
+		try {
+			con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			state = con.createStatement();
+			if(state.execute("UPDATE INGREDIENT set stock_actuel = "+qte+" where (id = "+id_item+")") == false)
+				return true;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean genererFacture(Client client, Table table) {
+		
+		return false;
+	}
+	
+	@Override
+	public int[] RecupererCommande(Client client, Table table) {
+		try {
+			Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			Statement stat = null;
+			ResultSet rs = null;
+			
+			stat = con.createStatement();
+			rs = stat.executeQuery("SELECT count(*) from commande where (id_client = "+this.idClient+")");
+			int nbreCom=0;	
+			if(rs.next()) {
+					nbreCom = rs.getInt(1);
+			}
+			int[] tab = new int[nbreCom];
+			rs = stat.executeQuery("SELECT id_commande from commande where (id_client = "+this.idClient+")");
+			int idCom=0;	
+			while(rs.next()) {
+				tab[idCom] = rs.getInt(1);
+				idCom++;
+			}
+			return tab;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+}

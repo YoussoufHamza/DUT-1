@@ -1,0 +1,77 @@
+package exo_GOP;
+
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+public class TestOperation {
+
+	public static void main(String[] args) {
+		JFrame displayWindow =  new JFrame("Accueil");
+		OperationCommerciale test1 = new GestionClient();
+		test1.setIdClient(1);
+		
+		if(test1.passerCommande(20, 0, 1)== true) {
+			JOptionPane.showMessageDialog(null, "Commande passée avec succès", "Commande", JOptionPane.INFORMATION_MESSAGE);
+		}
+		if(test1.passerCommande(2, 2, 3)== true) {
+			JOptionPane.showMessageDialog(null, "Commande passée avec succès", "Commande", JOptionPane.INFORMATION_MESSAGE);
+		}
+		if(test1.passerCommande(10, 3, 2)== true) {
+			JOptionPane.showMessageDialog(null, "Commande passée avec succès", "Commande", JOptionPane.INFORMATION_MESSAGE);
+		}
+		
+		int[] tab = test1.RecupererCommande();
+		System.out.println(tab.length);
+		int i;
+		for(i=0; i<tab.length-1; i++) {
+			if(test1.validerPaiemenr(tab[i])== true) {
+				JOptionPane.showMessageDialog(null, "Commande validée avec succès", "Commande", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+		if(test1.annulerCommande(tab[i])== true) {
+			JOptionPane.showMessageDialog(null, "Commande annulée avec succès", "Commande", JOptionPane.INFORMATION_MESSAGE);
+		}
+		double facture = test1.calculerMontantFacture();
+		JOptionPane.showMessageDialog(null, "Montant de la facture "+facture, "Commande", JOptionPane.INFORMATION_MESSAGE);
+		displayWindow.setVisible(true);
+		displayWindow.setSize(300,400);
+		displayWindow.setLayout(new BorderLayout());
+		displayWindow.add(test1.genererBonLivraison(), BorderLayout.CENTER);
+		displayWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JFrame displayWindow2 =  new JFrame("Accueil");
+		OperationCommerciale test2 = new GestionClient();
+		test2.setIdClient(2);
+		
+		if(test2.passerCommande(20, 0, 5)== true) {
+			JOptionPane.showMessageDialog(null, "Commande passée avec succès", "Commande", JOptionPane.INFORMATION_MESSAGE);
+		}
+		if(test2.passerCommande(2, 2, 4)== true) {
+			JOptionPane.showMessageDialog(null, "Commande passée avec succès", "Commande", JOptionPane.INFORMATION_MESSAGE);
+		}
+		if(test2.passerCommande(10, 3, 6)== true) {
+			JOptionPane.showMessageDialog(null, "Commande passée avec succès", "Commande", JOptionPane.INFORMATION_MESSAGE);
+		}
+		
+		int[] tab2 = test2.RecupererCommande();
+		System.out.println(tab2.length);
+		for(i=0; i<tab2.length-1; i++) {
+			if(test2.validerPaiemenr(tab2[i])== true) {
+				JOptionPane.showMessageDialog(null, "Commande validée avec succès", "Commande", JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+		if(test2.annulerCommande(tab2[i])== true) {
+			JOptionPane.showMessageDialog(null, "Commande annulée avec succès", "Commande", JOptionPane.INFORMATION_MESSAGE);
+		}
+		double facture2 = test2.calculerMontantFacture();
+		JOptionPane.showMessageDialog(null, "Montant de la facture "+facture2, "Commande", JOptionPane.INFORMATION_MESSAGE);
+		displayWindow2.setVisible(true);
+		displayWindow2.setSize(300,400);
+		displayWindow2.setLayout(new BorderLayout());
+		displayWindow2.add(test2.genererBonLivraison(), BorderLayout.CENTER);
+		displayWindow2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+}

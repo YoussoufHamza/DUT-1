@@ -1,0 +1,46 @@
+package exoG_BD;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
+
+public class TestCompte {
+
+	public static void main(String[] args) {
+		JFrame fenetre = new JFrame("Connexion");
+		
+		fenetre.setSize(300,300);
+		fenetre.setResizable(false);
+		fenetre.setVisible(true);
+		fenetre.setLayout(new BorderLayout());
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+
+}

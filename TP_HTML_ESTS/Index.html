@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2><span>A </span>STRONOMIES</h2>
+    <nav>
+        <a href="page_terre.html" target="_blank">Terre</a>
+        <a href="page_univers.html" target="_blank">Univers</a>
+        <a href="page_galaxie.html" target="_blank">Galaxie</a>
+        <a href="page_systeme_solaire.html" target="_blank">Système solaire</a>
+        
+    </nav>
+    
+
+    <br>
+    <div class="contain"> 
+        <div>
+            <img src="./images/terre2.jpg" alt="Terre">
+            <p><span> <a href="page_terre.html" target="_blank"> > </a>  </span></p>
+        </div>
+        <div>
+            <img src="./images/univers1.jpg" alt="univers">
+            <p><span> <a href="page_univers.html" target="_blank"> > </a></span></p>
+        </div>
+        <div>
+            <img src="./images/galaxie1.jpg" alt="Galaxie">
+            <p><span><a href="page_galaxie.html" target="_blank"> > </a> </span></p>
+        </div>
+        <div>
+            <img src="./images/syssol1.jpg" alt="Système solaire">
+            <p><span> <a href="page_systeme_solaire.html" target="_blank"> > </a> </span></p>
+        </div>    
+    </div>
+    
+</body>
+</html>
+
+<style>
+    body{
+        padding: 40px;
+        overflow-x: hidden;
+    }
+    h2 span{
+        color: #412;
+        font-size: 30px;
+        font-weight: bold;
+    }
+    h2{
+        font-size: 20px;
+    }
+    nav{
+        margin-top: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        color: black;
+        font-size: 20px;
+        margin-bottom: 100px;
+    }
+
+    nav a{
+        transition: .5s;
+    }
+
+    nav a:hover{    
+        border-bottom: 2px solid  rgb(59, 10, 26) ;
+        color: #412;
+        transform: translateY(15%);
+        transition: .5s;
+    }
+
+    .contain{
+        margin: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+    img{
+        height: 250px;
+        width: 250px;
+        margin-bottom: 40px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid  #412 ;
+    }
+    a{
+        text-decoration: none;  
+        color: black;
+    }
+    p{
+        text-align: center;
+    }
+    p span{
+        cursor: pointer;
+        background: #412;
+        font-size: 20px;
+        color: #fff;
+        padding: 15px;
+        border:5px solid  #fff ;
+        border-radius: 10px;
+        transition: .5s;
+    }
+    p span a{
+        cursor: pointer;
+        color: #fff;
+       
+    }
+    p span:hover{
+        cursor: pointer;
+        background: #fff;
+        color: #412;
+        border: 2px solid  #412 ;
+        transition: .5s;
+    }
+
+    p span a:hover{
+        cursor: pointer;
+        color: #412;
+        transition: .5s;
+    }
+</style>

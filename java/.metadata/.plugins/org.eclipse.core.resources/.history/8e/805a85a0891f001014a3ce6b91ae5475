@@ -1,0 +1,5 @@
+package exo_G_restaurant;
+
+public interface GestionRestaurant {
+
+}

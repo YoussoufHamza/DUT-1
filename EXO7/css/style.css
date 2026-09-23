@@ -1,0 +1,29 @@
+*{
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+form{
+    padding: 3% 25% 0% 25%;
+    width: 100%;
+    justify-content: center;
+}
+
+
+table{
+    width: 100%;
+    padding: 0 8%;
+    background-color: #fbf7f7;
+}
+
+
+legend{
+    text-align: left;
+    font-weight: bolder;
+    font-size: larger;
+}
+
+
+input{
+    border: .2px solid gray;
+}

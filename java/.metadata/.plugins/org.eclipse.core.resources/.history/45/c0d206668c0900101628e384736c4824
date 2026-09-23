@@ -1,0 +1,33 @@
+package exoG_BD;
+
+public class CompteEpargne implements Compte {
+	private String numCompte;
+	private double solde;
+	@Override
+	public void deposer(double montant) {
+		this.solde+=montant;
+		
+	}
+	@Override
+	public void retirer(double montant) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public double getSolde() {
+		
+		return this.solde;
+	}
+	@Override
+	public boolean vireVers(String NumC, double montant) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public String afficherDetails() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+}

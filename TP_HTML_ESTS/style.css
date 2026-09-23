@@ -1,0 +1,18 @@
+body{
+    color: #fff;
+    background-color: black;
+}
+
+h1 p{
+
+    color: blue;
+
+}
+
+p{
+    color: red;
+}
+
+td+td{
+    background-color: yellow;
+}

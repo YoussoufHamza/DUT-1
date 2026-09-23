@@ -1,0 +1,40 @@
+package exo_G_restaurant;
+
+public class Table {
+	private int id;
+	private int numero;
+	private String telephone;
+	private String email;
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public int getNumero() {
+		return this.numero;
+	}
+	
+	public String getTelephone() {
+		return this.telephone;
+	}
+	
+	public String getEmail() {
+		return this.email;
+	}
+	
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+	
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public void setId(int ID) {
+		this.id = ID;
+	}
+}

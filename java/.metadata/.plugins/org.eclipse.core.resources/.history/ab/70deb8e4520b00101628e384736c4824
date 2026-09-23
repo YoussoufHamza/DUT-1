@@ -1,0 +1,61 @@
+package exoG_BD;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
+
+public class TestCompte {
+
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DATABASE_URL = "jdbc:mysql://localhost/java_bd";
+	
+	public static void main(String[] args) {
+		
+		displayInterface();
+		
+	}
+	
+	public static void displayInterface() {
+		
+		
+		JMenuItem HistoriqueDesOP =  new JMenuItem(" Historique des opérations"); 
+		JMenuItem rechercheCompte =  new JMenuItem(" Rechercher un compte");
+		JMenuItem AffichageCompte =  new JMenuItem(" Affichage de comptes");
+		JMenuItem ModificationCompte =  new JMenuItem(" Modification de comptes");
+		JMenuItem SuppressionCompte =  new JMenuItem(" Suppression de comptes");
+		JMenuItem Operation =  new JMenuItem(" Operation bancaire");
+		
+		JMenu Menu = new JMenu("Menu");
+		Menu.add(AffichageCompte);
+		Menu.add(rechercheCompte);
+		Menu.add(ModificationCompte);
+		Menu.add(SuppressionCompte);	
+		Menu.add(Operation);
+		Menu.add(HistoriqueDesOP);
+		
+		JMenuBar MenuBar =  new JMenuBar();
+		MenuBar.add(Menu);
+		
+		JLabel Titre = new JLabel("Bienvenue ");
+		
+		
+		JPanel TitreETMenu =  new JPanel(new GridLayout(3,1));
+		JPanel ResumeIntro = new JPanel(new GridLayout(3,1));
+		
+		JTextArea text =  new JTextArea();
+		text.setFocusable(false);
+		text.setRows(8);
+		text.setColumns(10);
+		text.setEditable(false);
+		text.setText("Bienvenue sur l'application de gestion \n Ici vous pourrez effectuer plusieurs opérations");
+		
+		JFrame displayWindow =  new JFrame("Accueil");
+		displayWindow.setSize(2000,1000);
+		displayWindow.setLayout(new BorderLayout());
+		displayWindow.setVisible(true);
+		
+		
+	}
+
+}

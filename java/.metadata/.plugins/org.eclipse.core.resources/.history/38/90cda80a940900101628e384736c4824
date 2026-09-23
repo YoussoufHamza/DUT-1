@@ -1,0 +1,10 @@
+package exoG_BD;
+
+public class TestCompte {
+
+	public static void main(String[] args) {
+		CompteEpargne compte1= new CompteEpargne();
+		compte1.setNumcompte("123");
+	}
+
+}

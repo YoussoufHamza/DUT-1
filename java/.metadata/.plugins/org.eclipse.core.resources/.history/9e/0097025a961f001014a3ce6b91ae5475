@@ -1,0 +1,69 @@
+package exo_G_restaurant;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
+public class Commande {
+	static final String DATABASE_URL = "jdbc:mysql://localhost/java2";
+	private int id;
+	private int id_table;
+	private String date_heure;
+	private String statut;
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public int getId_table() {
+		return this.id_table;
+	}
+	
+	public String getDate_heure() {
+		return this.date_heure;
+	}
+	
+	public String getStatut() {
+		return this.statut;
+	}
+	
+	public void setId_table(int id_table) {
+		this.id_table = id_table;
+	}
+	
+	public void setDate_heure(String date_heure) {
+		this.date_heure = date_heure;
+	}
+	
+	public void setStatut(String Statut) {
+		this.statut = Statut;
+	}
+	
+	public void setId(int ID) {
+		this.id = ID;
+	}
+	
+	public boolean validerPaiemenr() {
+		try {
+			Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			Statement stat = null;
+			ResultSet rs = null;
+			
+			stat = con.createStatement();
+				rs = stat.executeQuery("SELECT * from commande where (id_client = "++" AND id_commande = "+this.id+" AND statut like 'En cours')");
+				if(rs.next()) {
+					if(stat.execute("UPDATE commande set statut = 'Valider' where id_commande like "+this.id+"")==false) {
+						return true;
+					}
+				}
+			
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+	
+}

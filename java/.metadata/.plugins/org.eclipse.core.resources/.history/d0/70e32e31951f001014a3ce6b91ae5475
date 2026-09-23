@@ -1,0 +1,22 @@
+package exo_G_restaurant;
+
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import exo_GOP.GestionClient;
+import exo_GOP.OperationCommerciale;
+
+public class TestRestaurant {
+	public static void main(String[] args) {
+		JFrame displayWindow =  new JFrame("Accueil");
+		
+		
+		displayWindow.setVisible(true);
+		displayWindow.setSize(300,400);
+		displayWindow.setLayout(new BorderLayout());
+		displayWindow.add(, BorderLayout.CENTER);
+		displayWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+}

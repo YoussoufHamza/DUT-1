@@ -1,0 +1,10 @@
+package exoG_BD;
+
+public interface Compte {
+	public abstract void deposer();
+	public abstract void retirer();
+	public abstract double getSolde();
+	public abstract boolean vireVers();
+	public abstract String afficherDetails();
+	
+}

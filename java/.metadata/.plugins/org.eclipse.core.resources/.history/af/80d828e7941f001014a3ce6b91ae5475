@@ -1,0 +1,164 @@
+package exo_G_restaurant;
+
+import java.awt.Color;
+import java.sql.*;
+import javax.swing.*;
+
+public class Restaurant implements GestionRestaurant {
+
+	@Override
+	public boolean reserverTable(Table table, Client client, String date_heure, int nb_personne) {
+		Connection con = null;
+		Statement state = null;
+		ResultSet result = null;
+		try {
+			con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			state = con.createStatement();
+			if(state.execute("INSERT INTO RESERVATION(id_client, id_table, date_heure, nb_personne) VALUES("+client.getId()+", "+table.getId()+", '"+date_heure+"', "+nb_personne+")") == false)
+				return true;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean libererTable(Table table, int id_reservation) {
+		Connection con = null;
+		Statement state = null;
+		ResultSet result = null;
+		try {
+			con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			state = con.createStatement();
+			if(state.execute("DELETE FROM RESERVATION WHERE(id = "+id_reservation+" AND id_table = "+table.getId()+") ") == false)
+				return true;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean prendreCommande(Commande commande, String date_heure) {
+		Connection con = null;
+		Statement state = null;
+		ResultSet result = null;
+		try {
+			con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			state = con.createStatement();
+			if(state.execute("INSERT INTO COMMANDE(id_table, date_heuree) VALUES("+commande.getId_table()+", '"+date_heure+"')") == false)
+				return true;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean mettreAJourStock(int id_item, int qte) {
+		Connection con = null;
+		Statement state = null;
+		ResultSet result = null;
+		try {
+			con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			state = con.createStatement();
+			if(state.execute("UPDATE INGREDIENT set stock_actuel = "+qte+" where (id = "+id_item+")") == false)
+				return true;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public JScrollPane genererFacture(Client client, Table table) {
+		
+		JScrollPane BonLivraison = null;
+		String[] head = {"Désignation", " Prix", " quantité", " Remise", "prix total avec remise"};
+		try {
+			Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			Statement stat = null;
+			Statement stat2 = null;
+			ResultSet rs = null;
+			ResultSet rs2 = null;
+			
+			stat = con.createStatement();
+			stat2 =  con.createStatement();
+			double montant = 0;
+			int nbreCommande=0;
+			
+			rs = stat.executeQuery("SELECT count(*) from reservation where (id_client = "+client.getId()+" AND id_table = "+table.getId()+")");
+			
+			if(rs.next()) {
+				nbreCommande = rs.getInt(1);
+			}
+			String[][] data = new String[nbreCommande+3][6];
+			rs = stat.executeQuery("SELECT id_commande from commande where (id_table = "+table.getId()+" AND statut like 'Valider')");
+			int k = 0;
+			while(rs.next()) {
+				
+				int idCommande = rs.getInt(1);
+				rs2 = stat2.executeQuery("Select nom, prix, quantite, prix*quantite from ligne_commande as lc, menu as m where (lc.id_commande = "+idCommande+" AND lc.id_menu = m.id)");
+				if(rs2.next()) {
+					data[k][0] = rs2.getString(1);
+					data[k][1] = rs2.getDouble(2)+"";
+					data[k][2] = rs2.getInt(3)+"";
+					montant+=rs2.getDouble(4);
+					k++;
+				}
+			}
+			
+			data[k+2][0] ="Montant :";
+			data[k+2][3] = montant+" dh"; 
+			BonLivraison = tableDefaut(head, data);
+			return BonLivraison;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static JScrollPane tableDefaut(String[] head, String[][] data) {
+		
+		JTable table = new JTable(data,head);
+		table.setFocusable(false);
+		table.setBackground(Color.WHITE);
+		table.setForeground(Color.black);
+		table.setCellSelectionEnabled(false);
+		table.setEnabled(false);
+		table.setRowSelectionAllowed(false);
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		
+		
+		return scrollPane;
+	}
+	
+	@Override
+	public int[] RecupererCommande(Client client, Table table) {
+		try {
+			Connection con = DriverManager.getConnection(DATABASE_URL, "root", "");
+			Statement stat = null;
+			ResultSet rs = null;
+			
+			stat = con.createStatement();
+			rs = stat.executeQuery("SELECT count(*) from commande where (id_client = "+this.idClient+")");
+			int nbreCom=0;	
+			if(rs.next()) {
+					nbreCom = rs.getInt(1);
+			}
+			int[] tab = new int[nbreCom];
+			rs = stat.executeQuery("SELECT id_commande from commande where (id_client = "+this.idClient+")");
+			int idCom=0;	
+			while(rs.next()) {
+				tab[idCom] = rs.getInt(1);
+				idCom++;
+			}
+			return tab;
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+}

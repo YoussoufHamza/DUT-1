@@ -1,0 +1,68 @@
+package exoG_BD;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
+
+public class TestCompte {
+
+	public static void main(String[] args) {
+		JFrame fenetre = new JFrame("Connexion");
+		
+		fenetre.setSize(300,300);
+		fenetre.setResizable(false);
+		fenetre.setVisible(true);
+		fenetre.setLayout(new BorderLayout());
+		
+		JPanel InfoCon = new JPanel(new GridLayout(3,2));
+		JPanel InfoTitre = new JPanel(new GridLayout(2,1));
+		JPanel InfoButton = new JPanel(new GridLayout(2,1));
+		
+		JLabel NumCompte, Cle, Titre;
+		Titre = new JLabel("CONNECTION AU COMPTE");
+		NumCompte = new JLabel("Numéro de compte :");
+		Cle = new JLabel("Clé du compte :");
+		JTextField NumCompteI = new JTextField();
+		JPasswordField CleI = new JPasswordField();
+		JButton Valider = new JButton("Valider");
+		
+		ActionListener Connection = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String Numc="", cleC="";
+				
+			}
+			
+		};
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+
+}

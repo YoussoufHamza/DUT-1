@@ -1,0 +1,46 @@
+*{
+    list-style: none;
+    text-decoration: none;
+    color: #fff;
+    overflow-x: hidden;
+}
+header{
+    width: 60%;
+    padding: 1% 2%;
+}
+header nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1% 2%;
+    background-color: #fff;
+    font-size: 18px;
+
+
+}
+
+li a{
+    color: #000;
+}
+li a:hover{
+    color: rgb(245, 171, 52);
+}
+body{
+    background: url("2.jpg");
+}
+section{
+    min-height: 70vh;
+}
+.accueil{
+    padding: 5% 9%;
+    width: 60%;
+}
+
+.accueil h1{
+    font-size: 35px;
+}
+.accueil h1 span{
+    font-size: 30px;
+    color: rgb(245, 171, 52);
+    margin: 0;
+}

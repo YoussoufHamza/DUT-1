@@ -1,0 +1,95 @@
+package exoG_BD;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
+
+public class TestCompte {
+
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DATABASE_URL = "jdbc:mysql://localhost/java_bd";
+	
+	public static void main(String[] args) {
+		
+		
+		JFrame fenetre = new JFrame("Connexion");
+		
+		fenetre.setSize(400,200);
+		fenetre.setVisible(true);
+		fenetre.setLayout(new BorderLayout());
+		
+		JPanel InfoCon = new JPanel(new GridLayout(3,2));
+		JPanel InfoTitre = new JPanel(new GridLayout(2,1));
+		JPanel InfoButton = new JPanel(new GridLayout(2,1));
+		
+		JLabel NumCompte, Cle, Titre;
+		Titre = new JLabel("CONNECTION AU COMPTE");
+		NumCompte = new JLabel("Numéro de compte :");
+		Cle = new JLabel("Clé du compte :");
+		JTextField NumCompteI = new JTextField();
+		JPasswordField CleI = new JPasswordField();
+		JButton Valider = new JButton("Valider");
+		
+		ActionListener Connection = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Connection con = null;
+				Statement stat = null;
+				
+				ResultSet result;
+				
+				String Numc="", cleC="";
+				Numc = NumCompteI.getText();
+				cleC=CleI.getText();
+				
+				if((!Numc.isEmpty()) && (!cleC.isEmpty())) {
+					try {
+						con =  DriverManager.getConnection(DATABASE_URL, "root", "");
+						
+						stat = con.createStatement();
+						JOptionPane.showMessageDialog(null, "Bienvenue Mr "+cleC, "Connexion ok", JOptionPane.OK_OPTION);
+						result = stat.executeQuery("SELECT nomProprietaire from compte where((numCompte like '"+Numc+"' ) AND (cle like '"+cleC+"' ))");
+						if(result.next()) {
+							String nom = result.getString(1);
+							JOptionPane.showMessageDialog(null, "Bienvenue Mr "+nom, "Connexion ok", JOptionPane.OK_OPTION);
+						}else {
+							JOptionPane.showMessageDialog(null, "Compte Introuvable", "Erreur", JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (SQLException e1) {
+						
+						e1.printStackTrace();
+					}	
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "Veillez renseigner tout les champs", "Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+			
+		};
+		
+		Valider.addActionListener(Connection);
+		
+		InfoTitre.add(Titre);
+		InfoCon.add(NumCompte);
+		InfoCon.add(NumCompteI);
+		InfoCon.add(Cle);
+		InfoCon.add(CleI);
+		InfoButton.add(Valider);
+		
+		fenetre.add(InfoTitre, BorderLayout.NORTH);
+		fenetre.add(InfoCon, BorderLayout.CENTER);
+		fenetre.add(InfoButton, BorderLayout.SOUTH);
+		fenetre.revalidate();
+	
+		
+	}
+	
+	public static void displayInterfce(String NumC) {
+		CompteEpargne C1 = new CompteEpargne();
+		C1.setNumcompte(NumC);;
+	}
+
+}

@@ -1,0 +1,268 @@
+package exoG_BD;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
+
+public class CompteEpargne implements Compte {
+	private String numCompte;
+	private String nomProprietaire;
+	private double solde;
+	
+	@Override
+	public boolean deposer(double montant) {
+		this.solde=this.solde+montant;
+		Connection con = null;
+		Statement stat = null;
+		Statement stat1 = null;
+		ResultSet result;
+		ResultSetMetaData resultmeta;
+		String displayResult= "";
+		
+    	   try {
+    	   		Class.forName(JDBC_DRIVER);
+    			con =  DriverManager.getConnection(DATABASE_URL, "root", "");
+    			stat = con.createStatement();
+    			
+    			double comptesolde=0;
+    			
+    			result = stat.executeQuery("SELECT solde from Compte where (numCompte like "+this.numCompte+")");
+    			if(result.next()) {
+    				comptesolde = result.getDouble(1);
+    				stat1 = con.createStatement();
+        	   		
+        	   		if(stat1.execute("UPDATE Compte set solde = "+(comptesolde+montant)+" WHERE (numCompte like "+this.numCompte+")") == false) {
+        	   			JOptionPane.showMessageDialog(null, "Operation sur le Compte "+this.numCompte+" reussit avec succès ", "Dépôt", JOptionPane.INFORMATION_MESSAGE);
+        	   			int nbreid=0;
+            			
+            			result = stat.executeQuery("SELECT count(*) from operation");
+            			if(result.next()) {
+            				nbreid = result.getInt(1);
+            			}
+            			nbreid++;
+            	   		stat1 = con.createStatement();
+            	   		stat1.execute("INSERT INTO operation VALUE ("+nbreid+", '"+this.numCompte+"', "+montant+", 'dépôt', ' ', NOW())");
+            	   		return true;
+            	   		
+        	   		}
+    			}else {
+    				JOptionPane.showMessageDialog(null, "Remplir correctement les champs demandés", "Retrait", JOptionPane.INFORMATION_MESSAGE);
+    			}
+    			
+    	   		
+    	   	} catch (SQLException e1) {
+		
+			e1.printStackTrace();
+    	   	} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	   return false;
+	}
+	@Override
+	public void retirer(double montant) {
+		if(this.getSolde()<montant) {
+			JOptionPane.showMessageDialog(null, "Solde insuffisant", "ALERTE", JOptionPane.WARNING_MESSAGE);
+		}else {
+			this.solde=this.getSolde()-montant;
+			Connection con = null;
+			Statement stat = null;
+			Statement stat1 = null;
+			ResultSet result;
+			ResultSetMetaData resultmeta;
+			String displayResult= "";
+			
+	    	   try {
+	    	   		Class.forName(JDBC_DRIVER);
+	    			con =  DriverManager.getConnection(DATABASE_URL, "root", "");
+	    			stat = con.createStatement();
+	    			
+	    			double comptesolde=0;
+	    			
+	    			result = stat.executeQuery("SELECT solde from Compte where (numCompte like "+this.numCompte+")");
+	    			if(result.next()) {
+	    				comptesolde = result.getDouble(1);
+	    				stat1 = con.createStatement();
+	        	   		
+	        	   		if(stat1.execute("UPDATE Compte set solde = "+(comptesolde-montant)+" WHERE (numCompte like "+this.numCompte+")")==false) {
+	        	   			JOptionPane.showMessageDialog(null, "Operation sur le Compte "+this.numCompte+" reussit avec succès ", "Retrait", JOptionPane.INFORMATION_MESSAGE);
+	        	   			int nbreid=0;
+	            			
+	            			result = stat.executeQuery("SELECT count(*) from operation");
+	            			if(result.next()) {
+	            				nbreid = result.getInt(1);
+	            			}
+	            			nbreid++;
+	            	   		stat1 = con.createStatement();
+	            	   		stat1.execute("INSERT INTO operation VALUE ("+nbreid+", '"+this.numCompte+"', "+montant+", 'retrait', ' ',NOW())");
+	            	   		
+	        	   		}
+	    			}else {
+	    				JOptionPane.showMessageDialog(null, "Remplir correctement les champs demandés", "Retrait", JOptionPane.INFORMATION_MESSAGE);
+	    			}
+	    			
+	    	   		
+	    	   	} catch (SQLException e1) {
+			
+				e1.printStackTrace();
+	    	   	} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+	    	  
+			JOptionPane.showMessageDialog(null, "Compte débité", "ALERTE", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+	@Override
+	public double getSolde() {
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result;
+		ResultSetMetaData resultmeta;
+		String displayResult= "";
+		try {
+	   		Class.forName(JDBC_DRIVER);
+			con =  DriverManager.getConnection(DATABASE_URL, "root", "");
+			stat = con.createStatement();
+			
+			double comptesolde=0;
+			
+			result = stat.executeQuery("SELECT solde from Compte where (numCompte like "+this.numCompte+")");
+			if(result.next()) {
+				comptesolde = result.getDouble(1);
+				this.solde= comptesolde;
+    	   	}
+	   		
+	   	} catch (SQLException e1) {
+	
+		e1.printStackTrace();
+	   	} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		 
+		return this.solde;
+	}
+	@Override
+	public boolean vireVers(String NumC, double montant) {
+		Connection con = null;
+		Statement stat = null;
+		Statement stat1 = null;
+		ResultSet result;
+		ResultSetMetaData resultmeta;
+		String displayResult= "";
+
+		if(((NumC.isEmpty())&&(montant<0)) || (this.getSolde()<montant)) {
+    	   JOptionPane option = new JOptionPane();
+    	   option.showMessageDialog(null, "Remplir correctement les champs demandés", "Virement", JOptionPane.INFORMATION_MESSAGE);
+    	   return false;
+		}else{
+    	   try {
+    	   		Class.forName(JDBC_DRIVER);
+    			con =  DriverManager.getConnection(DATABASE_URL, "root", "");
+    			stat = con.createStatement();
+    			
+    			double comptesolde=0;
+    			
+    			result = stat.executeQuery("SELECT solde from Compte where ((numCompte like '"+NumC+"') AND (numCompte !='"+this.numCompte+"'))");
+    			if(result.next()) {
+    				comptesolde = result.getDouble(1);
+    				stat1 = con.createStatement();
+        	   		this.retirer(montant);
+        	   		Compte Dest = new CompteEpargne();
+        	   		Dest.setNumcompte(NumC);
+        	   		if(Dest.deposer(montant)==true) {
+        	   			JOptionPane.showMessageDialog(null, "Virement du Compte "+this.numCompte+" vers "+NumC+" reussit avec succès ", "Virement", JOptionPane.INFORMATION_MESSAGE);
+        	   			int nbreid=0;
+            			
+            			result = stat.executeQuery("SELECT count(*) from operation");
+            			if(result.next()) {
+            				nbreid = result.getInt(1);
+            			}
+            			nbreid++;
+            	   		stat1 = con.createStatement();
+            	   		stat1.execute("INSERT INTO operation VALUE ("+nbreid+", '"+this.numCompte+"', "+montant+", 'virement', '"+NumC+"', NOW())");
+            	   		
+        	   		}else {
+        	   			JOptionPane.showMessageDialog(null, "Virement du Compte "+this.numCompte+" vers "+NumC+" impossible ", displayResult, 0);
+        	   		}
+    			}else {
+    				JOptionPane.showMessageDialog(null,"Numero de compte Inexistant / Impossible de faire un virement vers un même compte ","VIrement", JOptionPane.INFORMATION_MESSAGE);
+    			}
+    			
+    	   		
+    	   	} catch (SQLException e1) {
+		
+			e1.printStackTrace();
+    	   	} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	   return true;
+    	 }
+}
+		
+		
+	@Override
+	public String afficherDetails() {
+		Connection con = null;
+		Statement stat = null;
+		ResultSet result;
+		ResultSetMetaData resultmeta;
+		String displayResult= "";
+		try {
+	   		Class.forName(JDBC_DRIVER);
+			con =  DriverManager.getConnection(DATABASE_URL, "root", "");
+			stat = con.createStatement();
+			
+			double comptesolde=0;
+			
+			result = stat.executeQuery("SELECT numCompte, nomProprietaire, Solde, Type_Compte from Compte where (numCompte like "+ this.numCompte+")");
+			resultmeta = result.getMetaData();
+			DisplayData(con, stat, result, resultmeta, displayResult);
+			if(result.next()) {
+				comptesolde = result.getDouble(1);
+				this.solde= comptesolde;
+    	   	}
+	   		
+	   	} catch (SQLException e1) {
+	
+		e1.printStackTrace();
+	   	} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static void DisplayData(Connection con, Statement stat, ResultSet result, ResultSetMetaData resultmeta, String displayResult) {
+		try {
+			
+			int column = resultmeta.getColumnCount();
+			for(int i=1; i<=column; i++) {
+				displayResult += resultmeta.getColumnName(i) +"\t";
+			}
+			displayResult += "\n----------------------------------------------------- ";
+			displayResult += "----------------------------------------------------- \n";
+			
+			while(result.next()) {
+				for(int i=1; i<=column; i++) {
+					displayResult += result.getObject(i) +"\t";
+				}
+				displayResult += "\n";
+			}
+			
+			JOptionPane option = new JOptionPane();
+			option.showMessageDialog(null, new JTextArea(displayResult), "Affichage de compte", JOptionPane.INFORMATION_MESSAGE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void setNumcompte(String numcompte) {
+		this.numCompte = numcompte;
+	}
+	
+}

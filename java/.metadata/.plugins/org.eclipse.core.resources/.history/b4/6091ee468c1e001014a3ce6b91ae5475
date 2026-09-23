@@ -1,0 +1,15 @@
+package exo_GOP;
+
+import javax.swing.JScrollPane;
+
+public interface OperationCommerciale {
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DATABASE_URL = "jdbc:mysql://localhost/java_bd";
+	public abstract boolean passerCommande(int qte, int remise,  int idProduit);
+	public abstract boolean validerPaiemenr(int idCommande);
+	public abstract boolean annulerCommande(int idCommande);
+	public abstract double calculerMontantFacture();
+	public abstract JScrollPane genererBonLivraison();
+	public abstract void setIdClient(int idClient);
+	
+}

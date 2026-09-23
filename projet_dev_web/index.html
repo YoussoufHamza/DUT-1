@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Formulaire</h1>
+
+    <form action="#">
+        <fieldset>
+            <legend>Mes coordonnées</legend>
+            <table border="0">
+                <tr>
+                    <td class="entry"><label for="Nom">Nom</label> </td>
+                    <td><input type="text" name="Nom" id="Nom" placeholder="Entrer votre nom"></td>
+                </tr>
+
+                <tr>
+                    <td class="entry"><label for="Prenom">Prénom</label> </td>
+                    <td><input type="text" name="Prenom" id="Prenom" placeholder="Entrer votre Prénom"></td>
+                </tr>
+
+                <tr>
+                    <td class="entry"><label for="Date">Date de naissance</label> </td>
+                    <td><input type="date" name="Date" id="Date"></td>
+                </tr>
+
+                <tr>
+                    <td class="entry"><label for="email">Adresse mail</label> </td>
+                    <td><input type="email" name="Email" id="Email"></td>
+                </tr>
+
+                <tr>
+                    <td class="entry"><label for="Password">Mot de passe</label> </td>
+                    <td><input type="password" name="Password" id="Password"></td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <hr>
+
+        <fieldset>
+            <legend>Mes compétences</legend>
+
+                <label for="filiere">Filière</label><br>
+                <input type="radio" name="filiere" id="filiere" value="Génie Informatique"> Génie Informatique <br>
+                <input type="radio" name="filiere" id="filiere" value="Systèmes Informatiques et Réseaux"> Systèmes Informatiques et Réseaux <br> 
+                <input type="radio" name="filiere" id="filiere" value="Systèmes Informatiques Décisionnels"> Systèmes Informatiques Décisionnels <br><br>
+                <br>
+                <div class="textes">
+                    <label for="langages">Mes langages</label>
+                    <select name="langages[]" id="langages" multiple>
+                        <option value="Langage C"> Langage C</option>
+                        <option value="PHP"> PHP</option>
+                        <option value="Java"> Java</option>
+                    </select>
+                </div>
+                <br><br>
+                <label for="langues">Ma 2ème <br>langue</label> <br>
+                
+                <input type="checkbox" name="langues" id="langues" value="Français"> Français <br>
+                   
+                <input type="checkbox" name="langues" id="langues" value="Anglais"> Anglais <br>
+                    
+                <input type="checkbox" name="langues" id="langues" value="Allemand"> Allemand <br>
+                    
+                <input type="checkbox" name="langues" id="langues" value="Espagnole"> Espagnole <br>
+                    
+            <hr>
+
+            <div class="textes">
+                <label for="Message">Mon message</label> 
+                <textarea name="message" id="message" cols="100" rows="10" placeholder="Votre Message ..."></textarea>
+            </div>
+
+        </fieldset><br>
+        <input type="submit" value="Envoyer" name="envoyer" id="envoyer"> &nbsp;&nbsp; <input type="reset" name="effacer" id="effacer" value="Effacer">
+    </form>
+</body>
+</html>

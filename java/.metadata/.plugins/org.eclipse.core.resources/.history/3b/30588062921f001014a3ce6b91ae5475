@@ -1,0 +1,12 @@
+package exo_G_restaurant;
+
+public interface GestionRestaurant {
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DATABASE_URL = "jdbc:mysql://localhost/java2";
+	public abstract boolean reserverTable(Table table, Client client, String date_heure, int nb_personne);
+	public abstract boolean libererTable(Table table, int id_reservation);
+	public abstract boolean prendreCommande(Commande commande, String date_heure);
+	public abstract boolean mettreAJourStock(int id_item, int qte);
+	public abstract boolean genererFacture(Client client);
+	public abstract boolean int[] RecupererCommande(); 
+}

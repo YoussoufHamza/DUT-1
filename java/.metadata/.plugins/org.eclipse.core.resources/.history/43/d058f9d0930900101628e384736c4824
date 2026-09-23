@@ -1,0 +1,10 @@
+package exoG_BD;
+
+public class TestCompte {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

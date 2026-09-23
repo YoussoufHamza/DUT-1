@@ -1,0 +1,40 @@
+package exo_G_restaurant;
+
+public class Table {
+	private int id;
+	private int numero;
+	private int capacite;
+	private String zone;
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public int getNumero() {
+		return this.numero;
+	}
+	
+	public int getCapacite() {
+		return this.capacite;
+	}
+	
+	public String getZone() {
+		return this.zone;
+	}
+	
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+	
+	public void setCapacite(int capacite) {
+		this.capacite = capacite;
+	}
+	
+	public void setZone(String zone) {
+		this.zone = zone;
+	}
+	
+	public void setId(int ID) {
+		this.id = ID;
+	}
+}

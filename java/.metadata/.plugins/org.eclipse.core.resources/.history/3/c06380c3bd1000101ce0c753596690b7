@@ -1,0 +1,17 @@
+package exoG_BD;
+
+
+public interface Compte {
+	
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+	static final String DATABASE_URL = "jdbc:mysql://localhost/java_bd";
+	
+	public abstract void deposer(double montant);
+	public abstract void retirer(double montant);
+	public abstract double getSolde();
+	public abstract boolean vireVers(String NumC, double montant);
+	public abstract String afficherDetails();
+	public void setNumcompte(String numcompte);
+	
+	
+}

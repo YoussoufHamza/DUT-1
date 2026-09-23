@@ -1,0 +1,89 @@
+package exoG_BD;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+
+import javax.swing.*;
+
+public class CompteEpargne implements Compte {
+	private String numCompte;
+	private double solde;
+	
+	@Override
+	public void deposer(double montant) {
+		this.solde+=montant;
+		
+	}
+	@Override
+	public void retirer(double montant) {
+		if(this.solde<montant) {
+			JOptionPane.showMessageDialog(null, "Solde insuffisant", "ALERTE", JOptionPane.WARNING_MESSAGE);
+		}else {
+			this.solde-=montant;
+			JOptionPane.showMessageDialog(null, "Compte débité", "ALERTE", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+	@Override
+	public double getSolde() {
+		return this.solde;
+	}
+	@Override
+	public boolean vireVers(String NumC, double montant) {
+		Connection con = null;
+		Statement stat = null;
+		Statement stat1 = null;
+		ResultSet result;
+		ResultSetMetaData resultmeta;
+		String displayResult= "";
+       String nomE="test";
+       String telE="test";
+       String serviceE="test";
+       nomE = nom.getText();
+       telE = tel.getText();
+       serviceE = service.getText();
+       if((nomE.isEmpty())&&(telE.isEmpty())&&(serviceE.isEmpty())) {
+    	   JOptionPane option = new JOptionPane();
+    	   option.showMessageDialog(null, "Remplir correctement les champs demandés", "Ajout d'un employés", JOptionPane.INFORMATION_MESSAGE);
+       }else{
+    	   try {
+    	   		Class.forName(JDBC_DRIVER);
+    			con =  DriverManager.getConnection(DATABASE_URL, "root", "");
+    			stat = con.createStatement();
+    			
+    			int nbreid=0;
+    			
+    			result = stat.executeQuery("SELECT count(*) from employes");
+    			if(result.next()) {
+    				nbreid = result.getInt(1);
+    			}
+    			nbreid++;
+    	   		stat1 = con.createStatement();
+    	   		stat1.execute("INSERT INTO employes VALUE ("+nbreid+", '"+nomE+"', '"+telE+"', '"+serviceE+"')");
+    	   		result = stat.executeQuery("SELECT * from employes");
+    			resultmeta = result.getMetaData();
+    			DisplayData(con, stat, result, resultmeta, displayResult);
+    	   	} catch (SQLException e1) {
+		
+			e1.printStackTrace();
+    	   	} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	 }
+		}
+		if() {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	@Override
+	public String afficherDetails() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+}
