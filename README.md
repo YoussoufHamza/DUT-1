@@ -110,6 +110,3 @@ Pour `java/Fichier_BD`, certains exercices attendent:
 - Certains fichiers contiennent des problemes d'encodage (accents), typiques d'un melange UTF-8 / ANSI.
 - Plusieurs dossiers sont des versions successives d'un meme type de projet (notamment portfolio et formulaires web).
 
-## Auteur
-
-Brondon Jores Houakeu
